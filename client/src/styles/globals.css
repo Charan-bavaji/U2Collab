@@ -1,0 +1,45 @@
+.collab-editor:focus {
+  outline: none;
+}
+.collab-editor p {
+  margin: 0 0 0.5rem;
+  line-height: 1.7;
+}
+.collab-editor h1 {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 1rem 0 0.5rem;
+}
+.collab-editor h2 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 0.8rem 0 0.4rem;
+}
+.collab-editor ul,
+.collab-editor ol {
+  padding-left: 1.4rem;
+}
+.collab-editor code {
+  background: #f3f4f6;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* live cursor labels */
+.collaboration-cursor__caret {
+  border-left: 2px solid;
+  position: relative;
+}
+.collaboration-cursor__label {
+  font-size: 11px;
+  font-weight: 500;
+  position: absolute;
+  top: -1.4em;
+  left: -1px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  color: white;
+  background: inherit;
+}
