@@ -16,16 +16,21 @@
     "axios": "^1.15.0",
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.2",
+    "cookie": "^1.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "lib0": "^0.2.117",
     "mongoose": "^9.4.1",
+    "nanoid": "^5.1.11",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "y-protocols": "^1.0.7",
+    "yjs": "^13.6.30"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
