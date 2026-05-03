@@ -5,10 +5,12 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Room from './pages/Room'
 import JoinRedirect from './pages/JoinRedirect'
+import Home from './pages/Home'
 const App = () => (
   <BrowserRouter>
     <AuthProvider>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={
           <ProtectedRoute>
