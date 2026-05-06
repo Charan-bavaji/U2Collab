@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contex/AuthContext'
 import { motion } from 'framer-motion'
-
+import { Link } from 'react-router-dom'
 // ── Same brand palette ────────────────────────────────────────────────────────
 const AVATARS = [
     { initials: "AK", color: "#2563EB" },
@@ -198,7 +198,7 @@ function GitHubIcon() {
 const Login = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
-
+    const MotionLink = motion(Link)
     useEffect(() => {
         if (user) navigate('/dashboard', { replace: true })
     }, [user])
@@ -287,8 +287,8 @@ const Login = () => {
                     {/* OAuth buttons */}
                     <div className="flex flex-col gap-3">
                         {/* Google */}
-                        <motion.a
-                            href="http://localhost:5000/api/auth/google"
+                        <MotionLink
+                            to="/api/auth/google"
                             initial={{ opacity: 0, x: -16 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.55, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -298,11 +298,11 @@ const Login = () => {
                         >
                             <GoogleIcon />
                             Continue with Google
-                        </motion.a>
+                        </MotionLink>
 
                         {/* GitHub */}
-                        <motion.a
-                            href="http://localhost:5000/api/auth/github"
+                        <MotionLink
+                            to="/api/auth/github"
                             initial={{ opacity: 0, x: -16 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.65, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -312,7 +312,7 @@ const Login = () => {
                         >
                             <GitHubIcon />
                             Continue with GitHub
-                        </motion.a>
+                        </MotionLink>
                     </div>
 
                     {/* footer note */}
