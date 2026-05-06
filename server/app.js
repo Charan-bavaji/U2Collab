@@ -14,7 +14,7 @@ const app = express()
 const httpServer = http.createServer(app)
 initSocket(httpServer)  // initialize Socket.IO with the HTTP server
 
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }))
+app.use(cors({ origin: { origin: process.env.CLIENT_URL }, credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
 app.use(passport.initialize())
