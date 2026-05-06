@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "../../assets/logo.png";
+import { Link, redirect } from "react-router-dom";
+const MotionLink = motion(Link);
 
 const NAV_LINKS = [
   { label: "Features", hasDropdown: true },
@@ -7,6 +10,47 @@ const NAV_LINKS = [
   { label: "Blog", hasDropdown: false },
   { label: "Resources", hasDropdown: true },
 ];
+const THEMES = {
+  dark: {
+    bg: '#0D0D0F',
+    surface: '#131316',
+    surfaceHover: '#1A1A1F',
+    border: '#222228',
+    borderStr: '#2E2E38',
+    text: '#F0F0F4',
+    textMuted: '#7C7C8A',
+    textFaint: '#3A3A44',
+    accent: '#7C6AF7',
+    blue: '#4F46E5',
+    accentFaint: 'rgba(124,106,247,0.12)',
+    accentGlow: 'rgba(124,106,247,0.25)',
+    glass: 'rgba(19,19,22,0.92)',
+    shadow: '0 8px 32px rgba(0,0,0,0.6)',
+    shadowSm: '0 2px 8px rgba(0,0,0,0.35)',
+    codeBlock: '#0A0A0C',
+    quote: 'rgba(124,106,247,0.2)',
+    selection: 'rgba(124,106,247,0.25)',
+  },
+  light: {
+    bg: '#F5F5F7',
+    surface: '#FFFFFF',
+    surfaceHover: '#F9F9FB',
+    border: '#E5E5EA',
+    borderStr: '#D1D1D8',
+    text: '#18181B',
+    textMuted: '#6B6B78',
+    textFaint: '#C0C0CC',
+    accent: '#6355E8',
+    accentFaint: 'rgba(99,85,232,0.08)',
+    accentGlow: 'rgba(99,85,232,0.18)',
+    glass: 'rgba(255,255,255,0.94)',
+    shadow: '0 8px 32px rgba(0,0,0,0.09)',
+    shadowSm: '0 2px 8px rgba(0,0,0,0.06)',
+    codeBlock: '#F0F0F5',
+    quote: 'rgba(99,85,232,0.08)',
+    selection: 'rgba(99,85,232,0.18)',
+  },
+}
 
 const MEGA_MENU = {
   Features: {
@@ -42,7 +86,7 @@ const MEGA_MENU = {
           {
             icon: <AboutIcon />,
             label: "About",
-            desc: "The story behind SyncSpace and our mission",
+            desc: "The story behind U2Collab and our mission",
           },
           {
             icon: <ContactIcon />,
@@ -112,7 +156,7 @@ const MEGA_MENU = {
       {
         title: "Tools",
         items: [
-          { icon: <BoardIcon />, label: "Figma Plugin", desc: "Design with SyncSpace components" },
+          { icon: <BoardIcon />, label: "Figma Plugin", desc: "Design with U2Collab components" },
           { icon: <SecurityIcon />, label: "CLI", desc: "Command-line tooling for devs" },
           { icon: <StatusIcon />, label: "Changelog", desc: "What shipped recently" },
           { icon: <PresenceIcon />, label: "Roadmap", desc: "What we're building next" },
@@ -219,20 +263,25 @@ function ChevronIcon({ open }) {
     </motion.svg>
   );
 }
-function SyncSpaceLogo() {
+function U2CollabLogo() {
   return (
-    <div className="flex items-center gap-2 select-none">
-      <div className="relative w-8 h-8">
-        <motion.div
-          className="absolute inset-0 rounded-lg bg-blue-600"
-          whileHover={{ rotate: 8, scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        />
-        <svg className="absolute inset-0 w-full h-full p-1.5" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
-          <path d="M5 12h14M12 5l7 7-7 7" />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginRight: 20 }}>
+      <div style={{
+        width: 22, height: 22, borderRadius: 6,
+        // background: `linear-gradient(135deg, ${THEMES.light.accent}, ${THEMES.light.accentHover})`,
+        background: THEMES.light.accent,
+        display: 'flex', alignItems: 'center', justifyContent: 'center'
+      }}>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="white">
+          <rect x="1" y="1" width="4" height="4" rx="1" />
+          <rect x="7" y="1" width="4" height="4" rx="1" />
+          <rect x="1" y="7" width="4" height="4" rx="1" />
+          <rect x="7" y="7" width="4" height="4" rx="1" />
         </svg>
       </div>
-      <span className="font-bold text-[15px] tracking-tight text-gray-900">SyncSpace</span>
+      <span style={{ fontSize: 15, fontWeight: 750, color: THEMES.light.text, letterSpacing: '-.01em' }}>
+        U2Collab
+      </span>
     </div>
   );
 }
@@ -358,12 +407,12 @@ function MobileMenu({ open, onClose }) {
               </motion.a>
             ))}
             <div className="mt-3 flex flex-col gap-2">
-              <a href="#" className="text-center py-2.5 text-[14px] font-medium text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors no-underline">
+              <MotionLink to="/login" className="text-center py-2.5 text-[14px] font-medium text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors no-underline">
                 Sign in
-              </a>
-              <a href="#" className="text-center py-2.5 text-[14px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors no-underline">
+              </MotionLink>
+              <MotionLink to="/login" className="text-center py-2.5 text-[14px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors no-underline">
                 Start free
-              </a>
+              </MotionLink>
             </div>
           </div>
         </motion.div>
@@ -399,30 +448,29 @@ export default function Navbar() {
   return (
     <div className="w-full">
       {/* Announcement bar */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         className="w-full bg-blue-600 py-2 text-center"
       >
         <p className="text-[12.5px] font-medium text-white">
-          🎉 SyncSpace 2.0 is here — CRDT-powered editor now in beta.{" "}
+          🎉 U2Collab 2.0 is here — CRDT-powered editor now in beta.{" "}
           <a href="#" className="underline underline-offset-2 hover:text-blue-100 transition-colors">
             Read more →
           </a>
         </p>
-      </motion.div>
+      </motion.div> */}
 
       {/* Navbar */}
       <motion.nav
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className={`w-full sticky top-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? "bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm shadow-gray-100/80"
-            : "bg-white border-b border-gray-100"
-        }`}
+        className={`w-full sticky top-0 z-40 transition-all duration-300 ${scrolled
+          ? "bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm shadow-gray-100/80"
+          : "bg-white border-b border-gray-100"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-[60px]">
@@ -432,7 +480,7 @@ export default function Navbar() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.15 }}
             >
-              <SyncSpaceLogo />
+              <U2CollabLogo />
             </motion.div>
 
             {/* Desktop nav links */}
@@ -448,11 +496,10 @@ export default function Navbar() {
                   onMouseLeave={closeMenu}
                 >
                   <button
-                    className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-colors duration-150 ${
-                      activeMenu === link.label
-                        ? "text-blue-600 bg-blue-50"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                    }`}
+                    className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-colors duration-150 ${activeMenu === link.label
+                      ? "text-blue-600 bg-blue-50"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      }`}
                   >
                     {link.label}
                     {link.hasDropdown && <ChevronIcon open={activeMenu === link.label} />}
@@ -497,22 +544,23 @@ export default function Navbar() {
                 <span className="text-[11px] font-medium text-emerald-700">2.4k online</span>
               </div>
 
-              <motion.a
-                href="#"
+              <MotionLink
+                to="/login"
                 whileHover={{ backgroundColor: "#f9fafb" }}
                 whileTap={{ scale: 0.97 }}
                 className="px-4 py-2 text-[13.5px] font-medium text-gray-700 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors no-underline"
               >
                 Sign in
-              </motion.a>
-              <motion.a
-                href="#"
+              </MotionLink>
+              <MotionLink
+                to="/login"
+
                 whileHover={{ scale: 1.02, backgroundColor: "#1d4ed8" }}
                 whileTap={{ scale: 0.97 }}
                 className="px-4 py-2 text-[13.5px] font-semibold text-white bg-blue-600 rounded-lg transition-colors no-underline shadow-sm shadow-blue-200"
               >
                 Start free →
-              </motion.a>
+              </MotionLink>
             </motion.div>
 
             {/* Mobile hamburger */}
