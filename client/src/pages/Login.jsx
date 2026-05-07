@@ -288,7 +288,7 @@ const Login = () => {
                     <div className="flex flex-col gap-3">
                         {/* Google */}
                         <motion.a
-                            href={`${import.meta.env.VITE_API_URL}/api/auth/google`}
+                            href={`${import.meta.env.VITE_API_URL}/auth/google`}
                             initial={{ opacity: 0, x: -16 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.55, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -302,7 +302,7 @@ const Login = () => {
 
                         {/* GitHub */}
                         <motion.a
-                            href={`${import.meta.env.VITE_API_URL}/api/auth/github`}
+                            href={`${import.meta.env.VITE_API_URL}/auth/github`}
                             initial={{ opacity: 0, x: -16 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.65, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
