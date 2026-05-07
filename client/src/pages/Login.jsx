@@ -287,8 +287,8 @@ const Login = () => {
                     {/* OAuth buttons */}
                     <div className="flex flex-col gap-3">
                         {/* Google */}
-                        <MotionLink
-                            to="/api/auth/google"
+                        <motion.a
+                            href={`${import.meta.env.VITE_API_URL}/api/auth/google`}
                             initial={{ opacity: 0, x: -16 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.55, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -298,11 +298,11 @@ const Login = () => {
                         >
                             <GoogleIcon />
                             Continue with Google
-                        </MotionLink>
+                        </motion.a>
 
                         {/* GitHub */}
-                        <MotionLink
-                            to="/api/auth/github"
+                        <motion.a
+                            href={`${import.meta.env.VITE_API_URL}/api/auth/github`}
                             initial={{ opacity: 0, x: -16 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.65, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -312,7 +312,7 @@ const Login = () => {
                         >
                             <GitHubIcon />
                             Continue with GitHub
-                        </MotionLink>
+                        </motion.a>
                     </div>
 
                     {/* footer note */}
