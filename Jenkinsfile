@@ -1,0 +1,82 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDS = credentials('dockerhub-creds')
+        VITE_API_URL = credentials('vite-api-url')
+        VITE_SOCKET_URL = credentials('vite-socket-url')
+        IMAGE_CLIENT = "charanbavaji/u2collab-client"
+        IMAGE_SERVER = "charanbavaji/u2collab-server"
+        GIT_SHA = "${GIT_COMMIT.take(7)}"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Client Image') {
+            steps {
+                sh """
+                    docker build \
+                      --build-arg VITE_API_URL=${VITE_API_URL} \
+                      --build-arg VITE_SOCKET_URL=${VITE_SOCKET_URL} \
+                      -t ${IMAGE_CLIENT}:${GIT_SHA} \
+                      -t ${IMAGE_CLIENT}:latest \
+                      ./client
+                """
+            }
+        }
+
+        stage('Build Server Image') {
+            steps {
+                sh """
+                    docker build \
+                      -t ${IMAGE_SERVER}:${GIT_SHA} \
+                      -t ${IMAGE_SERVER}:latest \
+                      ./server
+                """
+            }
+        }
+
+        stage('Push Images to DockerHub') {
+            steps {
+                sh """
+                    echo ${DOCKERHUB_CREDS_PSW} | docker login -u ${DOCKERHUB_CREDS_USR} --password-stdin
+                    docker push ${IMAGE_CLIENT}:${GIT_SHA}
+                    docker push ${IMAGE_CLIENT}:latest
+                    docker push ${IMAGE_SERVER}:${GIT_SHA}
+                    docker push ${IMAGE_SERVER}:latest
+                """
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh """
+                    docker-compose pull
+                    docker-compose up -d
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            mail to: 'your-email@example.com',
+                 subject: "U2Collab Pipeline SUCCESS - Build #${env.BUILD_NUMBER}",
+                 body: "Build ${env.BUILD_NUMBER} deployed successfully. Commit: ${GIT_SHA}"
+        }
+        failure {
+            mail to: 'your-email@example.com',
+                 subject: "U2Collab Pipeline FAILED - Build #${env.BUILD_NUMBER}",
+                 body: "Build ${env.BUILD_NUMBER} failed. Check Jenkins console output for details."
+        }
+        always {
+            sh 'docker logout'
+        }
+    }
+}

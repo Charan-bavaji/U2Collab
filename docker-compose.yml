@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  client:
+    image: charanbavaji/u2collab-client:latest
+    container_name: u2collab-client
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+
+  server:
+    image: charanbavaji/u2collab-server:latest
+    container_name: u2collab-server
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
