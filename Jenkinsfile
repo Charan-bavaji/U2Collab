@@ -57,6 +57,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh """
+                    docker compose down --remove-orphans || true
                     docker compose pull
                     docker compose up -d
                 """
@@ -66,12 +67,12 @@ pipeline {
 
     post {
         success {
-            mail to: 'your-email@example.com',
+            mail to: 'charanbavaji.official@gmail.com',
                  subject: "U2Collab Pipeline SUCCESS - Build #${env.BUILD_NUMBER}",
                  body: "Build ${env.BUILD_NUMBER} deployed successfully. Commit: ${GIT_SHA}"
         }
         failure {
-            mail to: 'your-email@example.com',
+            mail to: 'charanbavaji.official@gmail.com',
                  subject: "U2Collab Pipeline FAILED - Build #${env.BUILD_NUMBER}",
                  body: "Build ${env.BUILD_NUMBER} failed. Check Jenkins console output for details."
         }
