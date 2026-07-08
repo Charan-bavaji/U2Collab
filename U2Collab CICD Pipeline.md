@@ -292,5 +292,5 @@ pipeline {
 
 **Charan Bavaji**
 - GitHub: [github.com/Charan-bavaji](https://github.com/Charan-bavaji)
-- LinkedIn: [linkedin.com/in/charan-bavaji](https://linkedin.com/in/charan-bavaji)
+- LinkedIn: [linkedin.com/in/charan-bavaji](https://www.linkedin.com/in/charan-r-884217221/)
 - DockerHub: [hub.docker.com/u/charanbavaji](https://hub.docker.com/u/charanbavaji)
