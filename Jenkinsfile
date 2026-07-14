@@ -54,15 +54,29 @@ pipeline {
             }
         }
 
+        // stage('Deploy') {
+        //     steps {
+        //         sh """
+        //             docker compose down --remove-orphans || true
+        //             docker compose pull
+        //             docker compose up -d
+        //         """
+        //     }
+        // }
         stage('Deploy') {
-            steps {
-                sh """
-                    docker compose down --remove-orphans || true
-                    docker compose pull
+    steps {
+        sshagent(credentials: ['deploy-ssh-key']) {
+            sh """
+                ssh -o StrictHostKeyChecking=no ec2-user@3.221.197.232 '
+                    cd /opt/u2collab &&
+                    docker compose down --remove-orphans || true &&
+                    docker compose pull &&
                     docker compose up -d
-                """
-            }
+                '
+            """
         }
+    }
+}
     }
 
     post {
