@@ -114,19 +114,54 @@ stage('Health Check & Record') {
 }
     }
 
+    
+// Getting E-mail on success and failure, logout from docker always.
+    // post {
+    //     success {
+    //         mail to: 'charanbavaji.official@gmail.com',
+    //              subject: "U2Collab Pipeline SUCCESS - Build #${env.BUILD_NUMBER}",
+    //              body: "Build ${env.BUILD_NUMBER} deployed successfully. Commit: ${GIT_SHA}"
+    //     }
+    //     failure {
+    //         mail to: 'charanbavaji.official@gmail.com',
+    //              subject: "U2Collab Pipeline FAILED - Build #${env.BUILD_NUMBER}",
+    //              body: "Build ${env.BUILD_NUMBER} failed. Check Jenkins console output for details."
+    //     }
+    //     always {
+    //         sh 'docker logout'
+    //     }
+    // }
+
+
+    // I have updated post stage to rollback whenever the pipline breaks at any stage to previous image
     post {
-        success {
-            mail to: 'charanbavaji.official@gmail.com',
-                 subject: "U2Collab Pipeline SUCCESS - Build #${env.BUILD_NUMBER}",
-                 body: "Build ${env.BUILD_NUMBER} deployed successfully. Commit: ${GIT_SHA}"
-        }
-        failure {
-            mail to: 'charanbavaji.official@gmail.com',
-                 subject: "U2Collab Pipeline FAILED - Build #${env.BUILD_NUMBER}",
-                 body: "Build ${env.BUILD_NUMBER} failed. Check Jenkins console output for details."
-        }
-        always {
-            sh 'docker logout'
-        }
+    success {
+        mail to: 'charanbavaji.official@gmail.com',
+             subject: "U2Collab Pipeline SUCCESS - Build #${env.BUILD_NUMBER}",
+             body: "Build ${env.BUILD_NUMBER} deployed successfully. Commit: ${GIT_SHA}"
     }
+    failure {
+        sshagent(credentials: ['deploy-ssh-key']) {
+            sh """
+                ssh -o StrictHostKeyChecking=no ec2-user@3.221.197.232 '
+                    cd /opt/u2collab &&
+                    LAST_GOOD=\$(cat current-deploy.txt) &&
+                    echo "CLIENT_TAG=\$LAST_GOOD" > .env &&
+                    echo "SERVER_TAG=\$LAST_GOOD" >> .env &&
+                    docker compose down --remove-orphans &&
+                    docker compose pull &&
+                    docker compose up -d &&
+                    sleep 10 &&
+                    curl -sf http://localhost:5000/api/health
+                '
+            """
+        }
+        mail to: 'charanbavaji.official@gmail.com',
+             subject: "U2Collab Pipeline FAILED - Auto-rollback triggered - Build #${env.BUILD_NUMBER}",
+             body: "Build ${env.BUILD_NUMBER} (commit ${GIT_SHA}) failed. Automatically rolled back to last known good image recorded in current-deploy.txt. Check Jenkins console output for details."
+    }
+    always {
+        sh 'docker logout'
+    }
+}
 }
