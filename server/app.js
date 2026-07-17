@@ -23,7 +23,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/rooms', roomRoutes)
 
 // Devops: Health check endpoint to verify server and database connectivity
-app.get('/api/health', async (req, res) => {
+app.get('/api/health-broken', async (req, res) => {
   try {
     // mongoose readyState: 1 = connected
     const dbState = mongoose.connection.readyState;

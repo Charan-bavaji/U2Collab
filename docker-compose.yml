@@ -1,13 +1,31 @@
+# Always pull the latest images for client and server services
+# services:
+#   client:
+#     image: charanbavaji/u2collab-client:latest
+#     container_name: u2collab-client
+#     restart: unless-stopped
+#     ports:
+#       - "5173:80"
+
+#   server:
+#     image: charanbavaji/u2collab-server:latest
+#     container_name: u2collab-server
+#     restart: unless-stopped
+#     ports:
+#       - "5000:5000"
+#     env_file:
+#       - /opt/u2collab-secrets/server.env
+
+# Use environment variables to specify the image tags for client and server services
 services:
   client:
-    image: charanbavaji/u2collab-client:latest
+    image: charanbavaji/u2collab-client:${CLIENT_TAG:-latest}
     container_name: u2collab-client
     restart: unless-stopped
     ports:
       - "5173:80"
-
   server:
-    image: charanbavaji/u2collab-server:latest
+    image: charanbavaji/u2collab-server:${SERVER_TAG:-latest}
     container_name: u2collab-server
     restart: unless-stopped
     ports:
