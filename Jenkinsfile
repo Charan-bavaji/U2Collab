@@ -77,14 +77,14 @@ pipeline {
         }
     }
 }
-        stage('Health Check & Record') {
+stage('Health Check & Record') {
     steps {
         sshagent(['deploy-ssh-key']) {
             sh """
                 sleep 10
-                ssh -o StrictHostKeyChecking=no devuser@\$DEPLOY_HOST '
+                ssh -o StrictHostKeyChecking=no ec2-user@3.221.197.232 '
                     curl -sf http://localhost:5000/api/health > /dev/null &&
-                    echo "${IMAGE_TAG}" > /opt/u2collab/current-deploy.txt
+                    echo "${GIT_SHA}" > /opt/u2collab/current-deploy.txt
                 '
             """
         }
