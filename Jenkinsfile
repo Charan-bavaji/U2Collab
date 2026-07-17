@@ -77,6 +77,19 @@ pipeline {
         }
     }
 }
+        stage('Health Check & Record') {
+    steps {
+        sshagent(['deploy-ssh-key']) {
+            sh """
+                sleep 10
+                ssh -o StrictHostKeyChecking=no devuser@\$DEPLOY_HOST '
+                    curl -sf http://localhost:5000/api/health > /dev/null &&
+                    echo "${IMAGE_TAG}" > /opt/u2collab/current-deploy.txt
+                '
+            """
+        }
+    }
+}
     }
 
     post {
