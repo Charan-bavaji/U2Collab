@@ -63,12 +63,32 @@ pipeline {
         //         """
         //     }
         // }
+
+        // I have divide runtime in to new instance so ssh into it through jenkins 
+//         stage('Deploy') {
+//     steps {
+//         sshagent(credentials: ['deploy-ssh-key']) {
+//             sh """
+//                 ssh -o StrictHostKeyChecking=no ec2-user@3.221.197.232 '
+//                     cd /opt/u2collab &&
+//                     docker compose down --remove-orphans || true &&
+//                     docker compose pull &&
+//                     docker compose up -d
+//                 '
+//             """
+//         }
+//     }
+// }
+        
+        // Applied parameterization rollback strategies using GIT_SHA value in .env
         stage('Deploy') {
     steps {
         sshagent(credentials: ['deploy-ssh-key']) {
             sh """
                 ssh -o StrictHostKeyChecking=no ec2-user@3.221.197.232 '
                     cd /opt/u2collab &&
+                    echo "CLIENT_TAG=${GIT_SHA}" > .env &&
+                    echo "SERVER_TAG=${GIT_SHA}" >> .env &&
                     docker compose down --remove-orphans || true &&
                     docker compose pull &&
                     docker compose up -d
@@ -77,6 +97,8 @@ pipeline {
         }
     }
 }
+
+        
 stage('Health Check & Record') {
     steps {
         sshagent(['deploy-ssh-key']) {
